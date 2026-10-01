@@ -1,0 +1,273 @@
+@import "tailwindcss";
+
+@theme {
+  --color-charcoal: #0a0c0b;
+  --color-ink: #141816;
+  --color-warm: #f5f1e8;
+  --color-sage: #8fa394;
+  --color-sage-deep: #5f7365;
+  --color-gold: #c9a876;
+  --color-gold-soft: #e2c99a;
+  --font-serif: "Instrument Serif", serif;
+  --font-sans: system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+html,
+body {
+  font-family: "Instrument Serif", serif;
+  background: #0a0c0b;
+  color: #f5f1e8;
+}
+
+::selection {
+  background: rgba(201, 168, 118, 0.35);
+  color: #f5f1e8;
+}
+
+/* ---------------------------------- */
+/* Liquid glass                       */
+/* ---------------------------------- */
+
+/* In @layer components so Tailwind positioning utilities (fixed/absolute) win */
+@layer components {
+  .liquid-glass {
+    background: rgba(255, 255, 255, 0.01);
+    background-blend-mode: luminosity;
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    border: none;
+    box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.1);
+    position: relative;
+    overflow: hidden;
+  }
+}
+
+.liquid-glass::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1.4px;
+  background: linear-gradient(180deg,
+    rgba(255,255,255,0.45) 0%, rgba(255,255,255,0.15) 20%,
+    rgba(255,255,255,0) 40%, rgba(255,255,255,0) 60%,
+    rgba(255,255,255,0.15) 80%, rgba(255,255,255,0.45) 100%);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+/* Heavier glass for content cards deeper in the page */
+@layer components {
+  .glass-card {
+    background: linear-gradient(160deg, rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0.02));
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    box-shadow:
+      inset 0 1px 1px rgba(255, 255, 255, 0.1),
+      0 24px 48px -24px rgba(0, 0, 0, 0.7);
+    position: relative;
+    overflow: hidden;
+  }
+}
+
+.glass-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(180deg,
+    rgba(255,255,255,0.35) 0%, rgba(255,255,255,0.1) 30%,
+    rgba(255,255,255,0.04) 55%, rgba(255,255,255,0.16) 100%);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Hover lighting: a soft radial spot that follows the cursor via CSS vars */
+.glass-card .card-light {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  opacity: 0;
+  transition: opacity 0.6s ease;
+  background: radial-gradient(
+    360px circle at var(--mx, 50%) var(--my, 50%),
+    rgba(226, 201, 154, 0.09),
+    transparent 65%
+  );
+  pointer-events: none;
+}
+
+.glass-card:hover .card-light {
+  opacity: 1;
+}
+
+/* ---------------------------------- */
+/* Animations                         */
+/* ---------------------------------- */
+
+/* Hero overlay bob — spec: 0 to -6px over 3s, constant scale(1.03) */
+@keyframes train-bob {
+  0%, 100% { transform: translateY(0) scale(1.03); }
+  50% { transform: translateY(-6px) scale(1.03); }
+}
+
+.animate-train-bob {
+  animation: train-bob 3s ease-in-out infinite;
+}
+
+/* Signature: the shared 6s "breath" rhythm used across the page */
+@keyframes breathe {
+  0%, 100% { opacity: 0.45; transform: scale(0.96); }
+  50% { opacity: 1; transform: scale(1.04); }
+}
+
+.animate-breathe {
+  animation: breathe 6s ease-in-out infinite;
+}
+
+@keyframes breathe-glow {
+  0%, 100% { box-shadow: 0 0 24px 2px rgba(201, 168, 118, 0.12); }
+  50% { box-shadow: 0 0 44px 8px rgba(201, 168, 118, 0.28); }
+}
+
+.animate-breathe-glow {
+  animation: breathe-glow 6s ease-in-out infinite;
+}
+
+/* Final CTA drifting spotlight */
+@keyframes spotlight-drift {
+  0%, 100% { transform: translate(-18%, -8%) scale(1); }
+  33% { transform: translate(14%, 6%) scale(1.15); }
+  66% { transform: translate(-6%, 14%) scale(0.95); }
+}
+
+.animate-spotlight {
+  animation: spotlight-drift 18s ease-in-out infinite;
+}
+
+/* Floating testimonials — gentle independent movement */
+@keyframes float-a {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+@keyframes float-b {
+  0%, 100% { transform: translateY(-8px); }
+  50% { transform: translateY(4px); }
+}
+@keyframes float-c {
+  0%, 100% { transform: translateY(4px); }
+  50% { transform: translateY(-8px); }
+}
+
+.animate-float-a { animation: float-a 9s ease-in-out infinite; }
+.animate-float-b { animation: float-b 11s ease-in-out infinite; }
+.animate-float-c { animation: float-c 10s ease-in-out infinite; }
+
+/* Scroll reveal */
+.reveal {
+  opacity: 0;
+  transform: translateY(32px);
+  transition: opacity 1s cubic-bezier(0.22, 1, 0.36, 1), transform 1s cubic-bezier(0.22, 1, 0.36, 1);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+
+.reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Timeline connector fill */
+.timeline-line {
+  background: linear-gradient(180deg, rgba(201, 168, 118, 0.55), rgba(143, 163, 148, 0.25));
+  transform-origin: top;
+  transition: transform 1.6s cubic-bezier(0.22, 1, 0.36, 1);
+  transform: scaleY(0);
+}
+
+.timeline-line.is-visible {
+  transform: scaleY(1);
+}
+
+/* FAQ accordion */
+.faq-answer {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.faq-answer.open {
+  grid-template-rows: 1fr;
+}
+
+.faq-answer > div {
+  overflow: hidden;
+}
+
+/* Feature icon micro-animation */
+.feature-icon {
+  transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1), color 0.6s ease;
+}
+
+.glass-card:hover .feature-icon {
+  transform: translateY(-3px) rotate(-6deg) scale(1.08);
+  color: #e2c99a;
+}
+
+/* Magnetic buttons get GPU transforms */
+.magnetic {
+  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform;
+}
+
+/* Film grain — unifies the video scenes and flat panels into one cinematic surface */
+.grain {
+  position: absolute;
+  inset: 0;
+  z-index: 40;
+  pointer-events: none;
+  opacity: 0.5;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.05 0'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* Horizontal showcase hides scrollbar but stays scrollable */
+.no-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .animate-train-bob,
+  .animate-breathe,
+  .animate-breathe-glow,
+  .animate-spotlight,
+  .animate-float-a,
+  .animate-float-b,
+  .animate-float-c {
+    animation: none;
+  }
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+  .timeline-line {
+    transform: scaleY(1);
+    transition: none;
+  }
+}

@@ -132,7 +132,7 @@ export default function Footer() {
           style={SANS}
         >
           <p>© {new Date().getFullYear()} Lumora Inc. All rights reserved.</p>
-          <div className="flex gap-6">
+          <div className="flex gap-6 sm:pr-16">
             <a href="#" className="transition-colors duration-300 hover:text-warm">
               Privacy
             </a>

@@ -113,20 +113,26 @@ export default function Footer() {
           </div>
         </div>
 
+        <div className="mt-16 flex justify-center" style={SANS}>
+          <a
+            href="https://www.neovibeailabs.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-center text-base tracking-wide text-warm/80 transition-colors duration-300 hover:text-gold-soft sm:text-lg"
+          >
+            Envisioned by{' '}
+            <span className="font-medium text-warm">NeovibeAILabs</span>
+            <span className="mx-2 text-warm/40">·</span>
+            Ankit Patni
+          </a>
+        </div>
+
         <div
-          className="mt-14 flex flex-col items-center justify-between gap-4 border-t border-white/5 pt-6 text-xs text-warm/40 sm:flex-row"
+          className="mt-10 flex flex-col items-center justify-between gap-4 border-t border-white/5 pt-6 text-xs text-warm/40 sm:flex-row"
           style={SANS}
         >
           <p>© {new Date().getFullYear()} Lumora Inc. All rights reserved.</p>
-          <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2">
-            <a
-              href="https://www.neovibeailabs.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="transition-colors duration-300 hover:text-warm"
-            >
-              Built by NeovibeAILabs by Ankit Patni
-            </a>
+          <div className="flex gap-6">
             <a href="#" className="transition-colors duration-300 hover:text-warm">
               Privacy
             </a>
